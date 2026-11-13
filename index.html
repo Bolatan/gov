@@ -75,13 +75,15 @@
     <section class="survey section-pad" id="survey">
       <div class="section-label"><span>04 — YOUR VOICE</span><span class="label-line"></span><span>COMMUNITY PRIORITIES</span></div>
       <div class="survey-layout"><div class="survey-intro"><p class="overline">HELP SET THE AGENDA</p><h2>What needs<br><em>urgent attention?</em></h2><p>Tell us which issue should be prioritised for quick intervention in your community. Responses can be sent without your name.</p><div class="survey-promise"><span>01</span><p>Choose a need, tell us where it is, and describe one practical intervention that would help.</p></div></div>
-        <form class="survey-form" id="priority-survey">
+        <form class="survey-form" id="priority-survey" action="https://formspree.io/f/xgakvdea" method="POST">
+          <input type="hidden" name="_subject" value="New community priority — VoteKOH survey">
+          <label for="sender-name">Your name <small>Optional — so we can thank you personally</small><input id="sender-name" name="name" type="text" maxlength="80" autocomplete="name" placeholder="e.g. Adebayo O."></label>
           <label for="priority-area">Priority need <span>*</span><select id="priority-area" name="priority" required><option value="" disabled selected>Choose the most urgent issue</option><option>Roads and public transport</option><option>Flooding, drainage and erosion</option><option>Water and sanitation</option><option>Electricity and energy</option><option>Healthcare and emergency services</option><option>Schools, skills and youth support</option><option>Jobs, small businesses and cost of living</option><option>Public safety and security</option><option>Housing and urban renewal</option><option>Waste collection and the environment</option><option>Government services and accountability</option><option>Other community need</option></select></label>
           <label for="community">Community, LGA or LCDA <small>Optional</small><input id="community" name="community" type="text" maxlength="100" placeholder="e.g. Badagry West, Ikorodu, Ajegunle"></label>
           <label for="urgency">When is action most needed? <span>*</span><select id="urgency" name="urgency" required><option value="" disabled selected>Select a timeframe</option><option>Immediately / within 6 months</option><option>Within the next year</option><option>Important longer-term priority</option></select></label>
           <label for="intervention">What quick intervention would help? <span>*</span><textarea id="intervention" name="intervention" rows="4" maxlength="1200" required placeholder="Describe the problem and one practical step that could improve it."></textarea><small class="char-note">Please do not include private or sensitive personal information.</small></label>
-          <button class="button button-dark" type="submit">Share this priority <span>↗</span></button>
-          <p class="survey-note">No name or contact details are requested. This static site does not store responses. Submitting opens an email draft to <a href="mailto:joansvilletechies@gmail.com">joansvilletechies@gmail.com</a>; you can review it and choose whether to send.</p>
+          <button class="button button-dark" type="submit" id="survey-submit">Share this priority <span>↗</span></button>
+          <p class="survey-note">Your response goes directly to the campaign team. Sharing your name is optional — no other contact details are required. Please do not include private or sensitive personal information.</p>
           <p class="survey-status" id="survey-status" aria-live="polite"></p>
         </form>
       </div>
@@ -133,6 +135,17 @@
   </main>
 
   <footer class="footer"><a class="brand footer-brand" href="#top"><span class="brand-mark">K</span><span>VOTE<span class="brand-gold">KOH</span><small>FOR GOVERNOR</small></span></a><span class="footer-line"></span><div class="footer-copy"><p>For a greater Lagos. Together.</p><small>Campaign concept website · VoteKOH.com.ng</small></div><a class="back-top" href="#top">BACK TO TOP ↑</a><p class="disclaimer">Independent website concept prepared in support of Dr. Hamzat. Confirm campaign authorization, official branding, platform language and legal disclosures before publication.</p><div class="credits"><p>Proudly Supported by <strong>HBSInitiaive4KOH</strong></p><p>Humbly Powered by <strong>Joansville Techies &amp; Otoriti</strong></p><div class="credits-contact"><a href="tel:+2348183882482">2348183882482</a><a href="mailto:joansvilletechies@gmail.com">joansvilletechies@gmail.com</a></div></div></footer>
+  <div class="dialog-overlay" id="survey-dialog" role="dialog" aria-modal="true" aria-labelledby="dialog-title" hidden>
+    <div class="dialog-box">
+      <button class="dialog-close" id="dialog-close" aria-label="Close dialog">×</button>
+      <span class="dialog-icon" id="dialog-icon">✓</span>
+      <p class="dialog-overline" id="dialog-overline">VOICE OF THE PEOPLE</p>
+      <h3 id="dialog-title"></h3>
+      <p id="dialog-message"></p>
+      <p class="dialog-detail" id="dialog-detail"></p>
+      <button class="button button-dark dialog-done" id="dialog-done">Done <span>↗</span></button>
+    </div>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>

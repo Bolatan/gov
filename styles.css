@@ -111,3 +111,20 @@
 .credits-contact a{font-size:9px;color:#7d693d;border-bottom:1px solid #d8c99c;padding-bottom:2px}
 @media(max-width:850px){.survey-layout{grid-template-columns:1fr;gap:28px}.survey-intro>p:not(.overline),.survey-promise{max-width:520px}}
 @media(max-width:600px){.survey-layout{margin-top:34px}.survey-form{grid-template-columns:1fr;padding:20px 17px;gap:15px}.survey-form label:first-child,.survey-form label:nth-last-of-type(1){grid-column:auto}.survey-note,.survey-status{grid-column:auto}.credits-contact{gap:8px 14px}}
+
+/* Survey response dialog */
+.dialog-overlay{position:fixed;inset:0;z-index:60;background:#092c23cc;display:grid;place-items:center;padding:20px;animation:dialogFade .25s ease}
+.dialog-box{position:relative;width:min(440px,100%);background:var(--paper);padding:42px 36px 34px;text-align:center;box-shadow:0 24px 60px #04150fa8;animation:dialogPop .3s cubic-bezier(.2,.9,.3,1.2)}
+.dialog-close{position:absolute;top:10px;right:14px;border:0;background:none;font-size:22px;line-height:1;color:#8b938a;cursor:pointer;padding:6px}
+.dialog-close:hover{color:var(--green)}
+.dialog-icon{width:56px;height:56px;display:grid;place-items:center;margin:0 auto 18px;border-radius:50%;background:var(--lime);color:var(--green);font-size:26px;font-weight:700}
+.dialog-icon.error{background:#e9bf67}
+.dialog-overline{font-size:9px;font-weight:700;letter-spacing:.18em;color:#9b7b3d;margin:0 0 10px}
+.dialog-box h3{font:600 28px/1.1 Manrope,sans-serif;letter-spacing:-.05em;color:var(--green);margin:0 0 14px}
+#dialog-message{font-size:13px;line-height:1.7;color:#5c6a60;margin:0 auto 16px;max-width:320px}
+.dialog-detail{font-size:10px;line-height:1.7;letter-spacing:.06em;color:#7e8578;border-top:1px solid var(--line);padding-top:14px;margin:0 0 22px;word-break:break-word}
+.dialog-detail:empty{display:none}
+.dialog-done{justify-content:center;margin:0 auto;border:0;cursor:pointer}
+@keyframes dialogFade{from{opacity:0}}
+@keyframes dialogPop{from{opacity:0;transform:translateY(14px) scale(.96)}}
+@media(max-width:600px){.dialog-box{padding:34px 24px 28px}.dialog-box h3{font-size:24px}}
