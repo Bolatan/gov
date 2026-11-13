@@ -30,22 +30,14 @@ function openDialog(kind, name, detail) {
     dialogIcon.textContent = '✓';
     dialogIcon.className = 'dialog-icon success';
     dialogOverline.textContent = 'VOICE OF THE PEOPLE';
-    dialogTitle.textContent = name ? `Thank you, ${name}!` : 'Thank you!';
-    dialogMessage.textContent = name
-      ? 'Your community priority has been received. Voices like yours help shape a greater Lagos.'
-      : 'Your community priority has been received. Voices like yours help shape a greater Lagos.';
-  } else if (kind === 'error') {
-    dialogIcon.textContent = '!';
-    dialogIcon.className = 'dialog-icon error';
-    dialogOverline.textContent = 'PLEASE TRY AGAIN';
-    dialogTitle.textContent = name ? `Sorry, ${name} — something went wrong` : 'Something went wrong';
-    dialogMessage.textContent = 'We could not send your response just now. Please check your connection and try again in a moment.';
+    dialogTitle.textContent = `Thank you, ${name}!`;
+    dialogMessage.textContent = 'Your community priority has been received. Voices like yours help shape a greater Lagos.';
   } else {
     dialogIcon.textContent = '!';
     dialogIcon.className = 'dialog-icon error';
-    dialogOverline.textContent = 'ALMOST THERE';
-    dialogTitle.textContent = 'Please complete the form';
-    dialogMessage.textContent = 'A few required fields still need your attention. Please review the highlighted items and try again.';
+    dialogOverline.textContent = 'PLEASE TRY AGAIN';
+    dialogTitle.textContent = `Sorry, ${name} — something went wrong`;
+    dialogMessage.textContent = 'We could not send your response just now. Please check your connection and try again in a moment.';
   }
   dialogDetail.textContent = detail || '';
   dialog.hidden = false;
@@ -67,13 +59,11 @@ if (survey) {
   survey.addEventListener('submit', async event => {
     event.preventDefault();
     if (!survey.checkValidity()) {
-      const nameField = survey.elements.name.value;
-      openDialog('incomplete', firstName(nameField), '');
       survey.reportValidity();
       return;
     }
     const data = new FormData(survey);
-    const name = data.get('name') ? firstName(String(data.get('name'))) : '';
+    const name = data.get('name') ? firstName(String(data.get('name'))) : 'Lagosian';
     const priority = data.get('priority') || '';
     const community = data.get('community') || 'your community';
     const urgency = data.get('urgency') || '';
