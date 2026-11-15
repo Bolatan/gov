@@ -11,85 +11,30 @@ nav.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
 }));
 
 const survey = document.querySelector('#priority-survey');
-const dialog = document.querySelector('#survey-dialog');
-const dialogIcon = document.querySelector('#dialog-icon');
-const dialogOverline = document.querySelector('#dialog-overline');
-const dialogTitle = document.querySelector('#dialog-title');
-const dialogMessage = document.querySelector('#dialog-message');
-const dialogDetail = document.querySelector('#dialog-detail');
-const submitBtn = document.querySelector('#survey-submit');
-const surveyStatus = document.querySelector('#survey-status');
-
-function firstName(fullName) {
-  const first = fullName.trim().split(/\s+/)[0];
-  return first.charAt(0).toUpperCase() + first.slice(1);
-}
-
-function openDialog(kind, name, detail) {
-  if (kind === 'success') {
-    dialogIcon.textContent = '✓';
-    dialogIcon.className = 'dialog-icon success';
-    dialogOverline.textContent = 'VOICE OF THE PEOPLE';
-    dialogTitle.textContent = `Thank you, ${name}!`;
-    dialogMessage.textContent = 'Your community priority has been received. Voices like yours help shape a greater Lagos.';
-  } else {
-    dialogIcon.textContent = '!';
-    dialogIcon.className = 'dialog-icon error';
-    dialogOverline.textContent = 'PLEASE TRY AGAIN';
-    dialogTitle.textContent = `Sorry, ${name} — something went wrong`;
-    dialogMessage.textContent = 'We could not send your response just now. Please check your connection and try again in a moment.';
-  }
-  dialogDetail.textContent = detail || '';
-  dialog.hidden = false;
-  document.body.style.overflow = 'hidden';
-  dialog.querySelector('#dialog-done').focus();
-}
-
-function closeDialog() {
-  dialog.hidden = true;
-  document.body.style.overflow = '';
-}
-
-dialog.querySelector('#dialog-done').addEventListener('click', closeDialog);
-dialog.querySelector('#dialog-close').addEventListener('click', closeDialog);
-dialog.addEventListener('click', event => { if (event.target === dialog) closeDialog(); });
-document.addEventListener('keydown', event => { if (event.key === 'Escape' && !dialog.hidden) closeDialog(); });
-
 if (survey) {
   survey.addEventListener('submit', async event => {
     event.preventDefault();
-    if (!survey.checkValidity()) {
-      survey.reportValidity();
-      return;
-    }
-    const data = new FormData(survey);
-    const name = data.get('name') ? firstName(String(data.get('name'))) : 'Lagosian';
-    const priority = data.get('priority') || '';
-    const community = data.get('community') || 'your community';
-    const urgency = data.get('urgency') || '';
-
-    submitBtn.disabled = true;
-    surveyStatus.textContent = 'Sending your response…';
+    const status = document.querySelector('#survey-status');
+    const button = survey.querySelector('button[type="submit"]');
+    const originalLabel = button.textContent;
+    button.disabled = true;
+    button.textContent = 'Sending…';
+    status.textContent = 'Sending your suggestion…';
     try {
       const response = await fetch(survey.action, {
         method: 'POST',
-        body: data,
+        body: new FormData(survey),
         headers: { Accept: 'application/json' }
       });
-      if (response.ok) {
-        const detail = [priority, `${community}`, urgency].filter(Boolean).join(' · ');
-        openDialog('success', name, detail);
-        survey.reset();
-        surveyStatus.textContent = '';
-      } else {
-        openDialog('error', name, '');
-        surveyStatus.textContent = '';
-      }
-    } catch {
-      openDialog('error', name, '');
-      surveyStatus.textContent = '';
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || 'Your suggestion could not be sent. Please try again.');
+      status.textContent = result.message;
+      survey.reset();
+    } catch (error) {
+      status.textContent = error.message || 'Could not reach the server. Please try again later.';
     } finally {
-      submitBtn.disabled = false;
+      button.disabled = false;
+      button.textContent = originalLabel;
     }
   });
 }
